@@ -6,20 +6,58 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import {useHistory} from "react-router-dom"
 import {smallImage} from "../utl"
+//IMAGES
+import playstation from "../img/playstation.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
+import nintendo from "../img/nintendo.svg";
+import apple from "../img/apple.svg";
+import gamepad from "../img/gamepad.svg";
+//Star Images
+import starEmpty from "../img/star-empty.png";
+import starFull from "../img/star-full.png";
 
-const GameDetail = () => {
+const GameDetail = ({pathId}) => {
   const history=useHistory()
-
-
 const exitHandler=(e)=>{
   const element=e.target
-  
 if(element.classList.contains(`shadow`))
 {
   document.body.style.overflow=`auto`
   history.push(`/`)
 }
 }
+  //Get Stars
+  const getStars = () => {
+    const stars = [];
+    const rating = Math.floor(game.rating);
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img alt="star" key={i} src={starFull}></img>);
+      } else {
+        stars.push(<img alt="star" key={i} src={starEmpty}></img>);
+      }
+    }
+    return stars;
+  };
+  //GET PLATFORM IMAGES
+  const getPlatform = (platform) => {
+    switch (platform) {
+      case "PlayStation 4":
+        return playstation;
+      case "Xbox One":
+        return xbox;
+      case "PC":
+        return steam;
+      case "Nintendo Switch":
+        return nintendo;
+      case "iOS":
+        return apple;
+      default:
+        return gamepad;
+    }
+  };
+ 
 
 
   //Data
@@ -29,23 +67,27 @@ if(element.classList.contains(`shadow`))
     <>
     {!isLoading && (
     <CardShadow className="shadow" onClick={exitHandler}>
-      <Detail>
+      <Detail layoutId={pathId}>
         <Stats>
           <div className="rating">
-            <h3>{game.name}</h3>
+            <motion.h3 layoutId={`title ${pathId}`}>{game.name}</motion.h3>
             <p>Rating: {game.rating}</p>
           </div>
           <Info>
             <h3>Platforms</h3>
             <Platforms>
               {game.platforms.map((data) => (
-                <h4 key={data.platform.id}>{data.platform.name}</h4>
+                <img
+                      alt={data.platform.name}
+                      key={data.platform.id}
+                      src={getPlatform(data.platform.name)}
+                    ></img>
               ))}
             </Platforms>
           </Info>
         </Stats>
         <Media>
-          <img src={smallImage(game.background_image,1280)} alt={game.background_image} />
+          <motion.img layoutId={`image ${pathId}`} src={smallImage(game.background_image,1280)} alt={game.background_image} />
         </Media>
         <Description>
           <p>{game.description_raw}</p>
