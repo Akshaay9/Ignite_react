@@ -17,11 +17,16 @@ function Nav() {
     dispatch(fetchSearch(textInput))
     setTextInput("")
   }
+  const clearSearched=()=>{
+    dispatch({
+      type:"CLEAR_SEARCHED"
+    })
+  }
 
 
     return (
         <StyledNav>
-        <Logo>
+        <Logo onClick={clearSearched}>
                 <img src={logo} alt=""/>
                 <h1>G-Nite</h1>
         </Logo> 
