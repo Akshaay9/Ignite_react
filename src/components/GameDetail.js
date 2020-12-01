@@ -161,6 +161,7 @@ const Media = styled(motion.div)`
   margin-top: 5rem;
   img {
     width: 100%;
+    display: inline;
   }
 `;
 
